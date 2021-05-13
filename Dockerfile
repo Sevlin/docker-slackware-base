@@ -41,7 +41,7 @@ RUN slackpkg update
 RUN slackpkg upgrade pkgtools
 RUN slackpkg install-template base
 RUN update-ca-certificates --fresh
-RUN echo 'https://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors
+RUN slackpkg new-config
 
 #
 # INST: slackpkg+
@@ -52,9 +52,6 @@ RUN upgradepkg --install-new /tmp/*.t?z
 RUN rm -vf /tmp/*.t?z
 
 COPY slackpkgplus.conf /etc/slackpkg/
-
-# SYS: replace configs with newer versions
-RUN for F in $(find . -type f -name '*.new'); do cat "${F}" > "${F%%.new}"; rm -vf "${F}"; done
 
 # SYS: restore slackpkg.conf
 RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
