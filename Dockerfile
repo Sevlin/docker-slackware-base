@@ -59,7 +59,7 @@ RUN for F in $(find . -type f -name '*.new'); do cat "${F}" > "${F%%.new}"; rm -
 # SYS: restore slackpkg.conf
 RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
  && sed -i 's/v2.8/v15.0/g' /etc/slackpkg/slackpkg.conf \
- && echo 'http://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
+ && echo 'https://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
  && touch /var/lib/slackpkg/current
 RUN rm /etc/slackpkg/slackpkg.conf.custom
 
