@@ -41,7 +41,6 @@ RUN slackpkg update
 RUN slackpkg upgrade pkgtools
 RUN slackpkg install-template base
 RUN update-ca-certificates --fresh
-RUN slackpkg new-config
 
 #
 # INST: slackpkg+
@@ -63,7 +62,9 @@ RUN rm /etc/slackpkg/slackpkg.conf.custom
 #
 # SYS: upgrade-all
 #
+RUN slackpkg update
 RUN slackpkg upgrade-all
+RUN slackpkg new-config
 RUN rm -rf /var/lib/slackpkg/* \
            /var/cache/packages/*
 RUN touch /var/lib/slackpkg/current
