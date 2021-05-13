@@ -28,7 +28,7 @@ RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
 
 RUN slackpkg update
 RUN slackpkg update gpg
-RUN slackpkg install aaa_glibc-solibs aaa_libraries
+RUN slackpkg install glibc-2 aaa_glibc-solibs aaa_libraries
 RUN slackpkg clean-system
 RUN slackpkg upgrade slackpkg
 
