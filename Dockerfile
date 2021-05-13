@@ -37,6 +37,7 @@ RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
  && echo 'http://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
  && touch /var/lib/slackpkg/current
 
+RUN slackpkg update gpg
 RUN slackpkg update
 RUN slackpkg upgrade pkgtools
 RUN slackpkg install-template base
@@ -62,6 +63,7 @@ RUN rm /etc/slackpkg/slackpkg.conf.custom
 #
 # SYS: upgrade-all
 #
+RUN slackpkg update gpg
 RUN slackpkg update
 RUN slackpkg upgrade-all
 RUN slackpkg new-config
