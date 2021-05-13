@@ -1,0 +1,83 @@
+---
+clone:
+  git:
+    image: drone/git
+
+pipeline:
+  lint-shell:
+    image: sevoid/linter
+    group: lint
+    lint: shell
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - current
+          - release-*
+          - refs/tags/v*
+
+  lint-yaml:
+    image: sevoid/linter
+    group: lint
+    lint: yaml
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - current
+          - release-*
+          - refs/tags/v*
+
+  lint-dockerfile:
+    image: sevoid/linter
+    group: lint
+    lint: docker
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - current
+          - release-*
+          - refs/tags/v*
+
+  build-dev:
+    image: plugins/docker:linux-amd64
+    experimental: true
+    squash: true
+    secrets:
+      - docker_username
+      - docker_password
+    repo: sevoid/slackware
+    tags:
+      - dev
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - current
+          - release-*
+          - refs/tags/v*
+
+  build-release:
+    image: plugins/docker:linux-amd64
+    experimental: true
+    squash: true
+    secrets:
+      - docker_username
+      - docker_password
+    repo: sevoid/slackware
+    group: build
+    tags:
+      - latest
+      - current
+    when:
+      event:
+        - push
+      branch:
+        - current
+
+# vim:set syntax=yaml ts=2 sw=2 et:
