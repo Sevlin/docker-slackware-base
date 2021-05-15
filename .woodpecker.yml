@@ -80,16 +80,25 @@ pipeline:
       branch:
         - current
 
-  trigger-downstream:
-    image: plugins/downstream
-    settings:
-      server: https://code.nix.org.ua
-      token:
-        from_secret: ci_token
-      fork: true
-      repositories:
-        - NiX/docker-linter
-        - NiX/docker-slackbuilder
+#  trigger-downstream:
+#    image: plugins/downstream
+#    settings:
+#      server: https://code.nix.org.ua
+#      token:
+#        from_secret: ci_token
+#      fork: true
+#      repositories:
+#        - NiX/docker-linter
+#        - NiX/docker-slackbuilder
+
+  mirror-to-github:
+    image: appleboy/drone-git-push
+    remote: git@github.com:Sevlin/docker-slackware-base.git
+    force: true
+    branch: current
+    secrets:
+      - source: github
+        target: GIT_PUSH_SSH_KEY
     when:
       event:
         - push
