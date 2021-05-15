@@ -80,4 +80,20 @@ pipeline:
       branch:
         - current
 
+  trigger-downstream:
+    image: plugins/downstream
+    settings:
+      server: https://code.nix.org.ua
+      token:
+        from_secret: ci_token
+      fork: true
+      repositories:
+        - NiX/docker-linter
+        - NiX/docker-slackbuilder
+    when:
+      event:
+        - push
+      branch:
+        - current
+
 # vim:set syntax=yaml ts=2 sw=2 et:
