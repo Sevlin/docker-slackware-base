@@ -2,7 +2,7 @@ FROM vbatts/slackware:current
 
 LABEL maintainer="sev@nix.org.ua"
 
-ENV SLACKPKGPLUS_VER=1.7.6
+ENV SLACKPKGPLUS_VER=1.7.7
 
 ENV TERM=xterm
 
@@ -26,20 +26,8 @@ RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
  && echo 'http://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
  && touch /var/lib/slackpkg/current
 
-RUN slackpkg update
-RUN slackpkg update gpg
-RUN slackpkg install aaa_glibc-solibs aaa_libraries
-RUN slackpkg clean-system
-RUN slackpkg upgrade slackpkg
-
-RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
- && sed -i 's/v2.8/v15.0/g' /etc/slackpkg/slackpkg.conf \
- && echo 'http://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
- && touch /var/lib/slackpkg/current
-
 RUN slackpkg update gpg
 RUN slackpkg update
-RUN slackpkg upgrade pkgtools
 RUN slackpkg install-template base
 RUN update-ca-certificates --fresh
 
@@ -53,13 +41,6 @@ RUN rm -vf /tmp/*.t?z
 
 COPY slackpkgplus.conf /etc/slackpkg/
 
-# SYS: restore slackpkg.conf
-RUN cat /etc/slackpkg/slackpkg.conf.custom > /etc/slackpkg/slackpkg.conf \
- && sed -i 's/v2.8/v15.0/g' /etc/slackpkg/slackpkg.conf \
- && echo 'https://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
- && touch /var/lib/slackpkg/current
-RUN rm /etc/slackpkg/slackpkg.conf.custom
-
 #
 # SYS: upgrade-all
 #
@@ -69,5 +50,6 @@ RUN slackpkg upgrade-all
 RUN slackpkg new-config
 RUN rm -rf /var/lib/slackpkg/* \
            /var/cache/packages/*
-RUN touch /var/lib/slackpkg/current
+RUN echo 'https://mirrors.nix.org.ua/linux/slackware/slackware64-current/' > /etc/slackpkg/mirrors \
+ && touch /var/lib/slackpkg/current
 
